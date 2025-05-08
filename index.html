@@ -25,14 +25,45 @@
 </head>
 <body>
   <h2>🎰 Bitcoin Mining vs Powerball 🎯</h2>
-  <div class="preset-container">
-    <div class="preset">
-      <img src="https://avatars.githubusercontent.com/u/196206519?v=4" alt="Logo" style="width: 120px; height: 120px; border-radius: 50%; margin: auto;">
-    </div>
+<div class="preset-container">
+  <div class="preset" onclick="setPreset('bitaxe')" title="Bitaxe Gamma: 1.7TH/s, 5W, ~$100">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Bitaxe.svg/512px-Bitaxe.svg.png" alt="Bitaxe">
+    Bitaxe Gamma
   </div>
+  <div class="preset">
+    <img src="https://avatars.githubusercontent.com/u/196206519?v=4" alt="Logo" style="width: 120px; height: 120px; border-radius: 50%; margin: auto;">
+  </div>
+  <div class="preset" onclick="setPreset('s17')" title="Antminer S17+: 73TH/s, 2920W, ~$1000">
+    <img src="https://asicminervalue.com/images/miners/antminer-s17.png" alt="Antminer S17+">
+    Antminer S17+
+  </div>
+</div>
 
   <!-- Existing form and results here -->
-  <!-- [form inputs remain unchanged] -->
+  <label for="hashrate">💡 Hashrate per Miner (TH/s):</label>
+  <input type="number" id="hashrate" placeholder="e.g. 73">
+
+  <label for="hours">☀️ Average Mining Hours/Day:</label>
+  <input type="number" id="hours" placeholder="e.g. 5">
+
+  <label for="miners">🔌 Number of Miners:</label>
+  <input type="number" id="miners" placeholder="e.g. 3" oninput="calculateOdds()">
+
+  <label for="power">⚡ Power Consumption per Miner (Watts):</label>
+  <input type="number" id="power" placeholder="e.g. 2920">
+
+  <label for="cost">💸 Electricity Cost (AUD per kWh):</label>
+  <input type="number" id="cost" placeholder="e.g. 0.30">
+
+  <label for="unitCost">🧾 Cost per Miner (AUD):</label>
+  <input type="number" id="unitCost" placeholder="e.g. 1000">
+
+  <button onclick="calculateOdds()">🚀 Run the Numbers</button>
+
+  <div class="result" id="btcResult"></div>
+  <div class="result" id="comparison"></div>
+  <div class="result" id="powerCosts"></div>
+  <div class="result" id="profitResult"></div>
 
   <div id="chartContainer">
     <canvas id="breakevenChart"></canvas>
@@ -81,6 +112,24 @@
         }
       });
     }
-  </script>
+  function setPreset(model) {
+  if (model === 'bitaxe') {
+    document.getElementById('hashrate').value = 1.7;
+    document.getElementById('miners').value = 1;
+    document.getElementById('power').value = 5;
+    document.getElementById('hours').value = 5;
+    document.getElementById('cost').value = 0.30;
+    document.getElementById('unitCost').value = 100;
+  } else if (model === 's17') {
+    document.getElementById('hashrate').value = 73;
+    document.getElementById('miners').value = 1;
+    document.getElementById('power').value = 2920;
+    document.getElementById('hours').value = 5;
+    document.getElementById('cost').value = 0.30;
+    document.getElementById('unitCost').value = 1000;
+  }
+  calculateOdds();
+}
+</script>
 </body>
 </html>
