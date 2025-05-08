@@ -49,6 +49,9 @@
   <label for="cost">💸 Electricity Cost (AUD per kWh):</label>
   <input type="number" id="cost" placeholder="e.g. 0.30">
 
+  <label for="unitCost">🧾 Cost per Miner (AUD):</label>
+  <input type="number" id="unitCost" placeholder="e.g. 1000">
+
   <button onclick="calculateOdds()">🚀 Run the Numbers</button>
 
   <div class="result" id="btcResult"></div>
@@ -64,12 +67,14 @@
         document.getElementById('power').value = 5;
         document.getElementById('hours').value = 5;
         document.getElementById('cost').value = 0.30;
+        document.getElementById('unitCost').value = 100;
       } else if (model === 's17') {
         document.getElementById('hashrate').value = 73;
         document.getElementById('miners').value = 1;
         document.getElementById('power').value = 2920;
         document.getElementById('hours').value = 5;
         document.getElementById('cost').value = 0.30;
+        document.getElementById('unitCost').value = 1000;
       }
       calculateOdds();
     }
@@ -86,6 +91,7 @@
       const numMiners = parseInt(document.getElementById('miners').value) || 0;
       const powerWatts = parseFloat(document.getElementById('power').value) || 0;
       const electricityRate = parseFloat(document.getElementById('cost').value) || 0;
+      const unitCost = parseFloat(document.getElementById('unitCost').value) || 0;
 
       const totalHashrate = hashrate * numMiners;
       const effectiveTH = (totalHashrate * dailyHours) / 24;
@@ -101,7 +107,10 @@
       const monthlyCost = dailyCost * 30;
       const yearlyCost = dailyCost * 365;
       const monthlyIncome = dailyIncome * 30;
+      const yearlyIncome = dailyIncome * 365;
       const monthlyProfit = monthlyIncome - monthlyCost;
+      const yearlyProfit = yearlyIncome - yearlyCost;
+      const totalHardwareCost = numMiners * unitCost;
 
       document.getElementById('btcResult').innerText =
         `📈 With ${totalHashrate} TH/s mining ${dailyHours}h/day:\n` +
@@ -124,7 +133,9 @@
         `💰 Estimated Profit:\n` +
         `🔹 Daily Income: ~$${dailyIncome.toFixed(2)} AUD\n` +
         `🔹 Monthly Income: ~$${monthlyIncome.toFixed(2)} AUD\n` +
-        `🔹 Monthly Profit: ~$${monthlyProfit.toFixed(2)} AUD`;
+        `🔹 Monthly Profit: ~$${monthlyProfit.toFixed(2)} AUD\n` +
+        `🔹 Yearly Profit: ~$${yearlyProfit.toFixed(2)} AUD\n` +
+        `🛠️ Hardware Cost: ~$${totalHardwareCost.toFixed(2)} AUD`;
     }
   </script>
 </body>
