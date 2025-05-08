@@ -136,8 +136,8 @@
     </div>
   </div>
 
-  <label for="hashrate">💡 Your Hashrate (TH/s):</label>
-  <input type="number" id="hashrate" placeholder="e.g. 219">
+  <label for="hashrate">💡 Hashrate per Miner (TH/s):</label>
+  <input type="number" id="hashrate" placeholder="e.g. 73">
 
   <label for="hours">☀️ Average Mining Hours/Day:</label>
   <input type="number" id="hours" placeholder="e.g. 5">
@@ -146,21 +146,10 @@
   <input type="number" id="miners" placeholder="e.g. 3">
 
   <label for="power">⚡ Power Consumption per Miner (Watts):</label>
-  <input type="number" id="power" placeholder="e.g. 3250">
+  <input type="number" id="power" placeholder="e.g. 2920">
 
   <label for="cost">💸 Electricity Cost (AUD per kWh):</label>
   <input type="number" id="cost" placeholder="e.g. 0.30">
-
-  <button onclick="calculateOdds()">🚀 Run the Numbers</button>
-
-  <div class="result" id="btcResult"></div>
-  <div class="result" id="comparison"></div>
-  <div class="result" id="powerCosts"></div>
-  <div class="result" id="profitResult"></div>
-
-  <div id="buyLink">
-    <a href="https://your-affiliate-link.com" target="_blank">🛒 Buy Another Miner</a>
-  </div>
 
   <script>
     function setPreset(model) {
@@ -173,67 +162,12 @@
       } else if (model === 's17') {
         document.getElementById('hashrate').value = 73;
         document.getElementById('miners').value = 1;
-        document.getElementById('power').value = 3250;
+        document.getElementById('power').value = 2920;
         document.getElementById('hours').value = 5;
         document.getElementById('cost').value = 0.30;
       }
     }
-
-    function calculateOdds() {
-      const totalNetworkTH = 600000000;
-      const blocksPerDay = 144;
-      const blockRewardBTC = 3.125;
-      const btcPriceAUD = 95000;
-      const powerballOdds = 134490400;
-
-      const userTH = parseFloat(document.getElementById('hashrate').value);
-      const dailyHours = parseFloat(document.getElementById('hours').value);
-      const numMiners = parseInt(document.getElementById('miners').value);
-      const powerWatts = parseFloat(document.getElementById('power').value);
-      const electricityRate = parseFloat(document.getElementById('cost').value);
-
-      if (!userTH || !dailyHours || !numMiners || !powerWatts || !electricityRate) return;
-
-      const effectiveTH = (userTH * dailyHours) / 24;
-      const userShare = effectiveTH / totalNetworkTH;
-      const dailyBlockChance = userShare * blocksPerDay;
-      const expectedBlockDays = 1 / dailyBlockChance;
-      const blockValueAUD = blockRewardBTC * btcPriceAUD;
-      const dailyBTCReward = dailyBlockChance * blockRewardBTC;
-      const dailyIncome = dailyBTCReward * btcPriceAUD;
-
-      const dailyKWh = (numMiners * powerWatts * dailyHours) / 1000;
-      const dailyCost = dailyKWh * electricityRate;
-      const monthlyCost = dailyCost * 30;
-      const yearlyCost = dailyCost * 365;
-      const monthlyIncome = dailyIncome * 30;
-      const monthlyProfit = monthlyIncome - monthlyCost;
-
-      document.getElementById('btcResult').innerText =
-        `📈 With ${userTH} TH/s mining ${dailyHours}h/day:\n` +
-        `🔹 Block chance/day: ${(dailyBlockChance * 100).toFixed(5)}%\n` +
-        `🔹 Avg. time to mine 1 block solo: ~${Math.round(expectedBlockDays)} days (~${(expectedBlockDays / 365).toFixed(1)} years)\n` +
-        `🔹 Block reward: ~$${blockValueAUD.toLocaleString()} AUD`;
-
-      const betterOdds = dailyBlockChance > (1 / powerballOdds);
-      document.getElementById('comparison').innerText =
-        `🎲 Powerball odds: 1 in 134,490,400\n` +
-        `🎯 Your solo mining odds are: ${betterOdds ? 'BETTER' : 'WORSE'}`;
-
-      document.getElementById('powerCosts').innerText =
-        `⚡ Estimated Power Costs:\n` +
-        `🔹 Daily: ~$${dailyCost.toFixed(2)} AUD\n` +
-        `🔹 Monthly: ~$${monthlyCost.toFixed(2)} AUD\n` +
-        `🔹 Yearly: ~$${yearlyCost.toFixed(2)} AUD`;
-
-      document.getElementById('profitResult').innerText =
-        `💰 Estimated Profit:\n` +
-        `🔹 Daily Income: ~$${dailyIncome.toFixed(2)} AUD\n` +
-        `🔹 Monthly Income: ~$${monthlyIncome.toFixed(2)} AUD\n` +
-        `🔹 Monthly Profit: ~$${monthlyProfit.toFixed(2)} AUD`;
-
-      document.getElementById('buyLink').style.display = betterOdds ? 'block' : 'none';
-    }
   </script>
 </body>
 </html>
+
